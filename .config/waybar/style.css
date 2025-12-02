@@ -20,7 +20,9 @@
 /* --- Left Modules (Individual, Fully Rounded Blocks - With Horizontal Spacing & Simple Hover) --- */
 #workspaces,
 #custom-uptime,
-#cpu {
+#cpu,
+#custom-music.Playing,
+#custom-music.Paused {
   background-color: #1a1b26;
   padding: 0.3rem 0.7rem;
   margin: 5px 0px; /* 5px top/bottom margin, 0px left/right (base for individual control) */
@@ -38,7 +40,7 @@
   margin-right: 5px; /* Spacing after the workspaces module */
 }
 
-#custom-uptime {
+#cpu {
   margin-right: 5px; /* Spacing after the uptime module */
 }
 
@@ -91,9 +93,8 @@
 #pulseaudio,
 #backlight,
 #network,
-#custom-lock,
-#custom-restart,
-#custom-shutdown,
+#custom-power,
+#custom-updates,
 #battery {
   background-color: #1a1b26;
   padding: 0.3rem 0.7rem;
@@ -109,9 +110,8 @@
 #pulseaudio:hover,
 #backlight:hover,
 #network:hover,
-#custom-lock:hover,
-#custom-restart:hover,
-#custom-shutdown:hover,
+#custom-power:hover,
+#custom-updates:hover,
 #battery:hover {
   background-color: rgb(41, 42, 53);
 }
@@ -122,7 +122,7 @@
   border-bottom-left-radius: 6px;
 }
 
-#custom-shutdown {
+#custom-power {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   margin-right: 7px;
@@ -155,14 +155,12 @@
   color: #e78284;
 }
 
-#custom-lock {
-  color: #babbf1;
-}
-#custom-restart {
-  color: #babbf1;
-}
-#custom-shutdown {
+#custom-power {
   color: #e78284;
+}
+
+#custom-updates {
+  color: #e7c787;
 }
 
 #bluetooth {
@@ -188,11 +186,41 @@
 /* --- Tooltip Styles --- */
 tooltip {
   background-color: #1a1b26;
-  color: #dddddd;
-  padding: 5px 12px;
-  margin: 5px 0px;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+tooltip label {
+  color: #c6d0f5;
+  padding: 5px 12px;
   font-size: 12px;
+}
+
+/* --- Cava Module Styles --- */
+
+#custom-music.Paused {
+  opacity: 0.7;
+}
+
+#custom-music.Stopped {
+  opacity: 0;
+}
+
+/* --- Power Menu Styles --- */
+
+menu {
+  background-color: #1a1b26;
+  border-radius: 0;
+  box-shadow: none;
+  min-width: 0;
+  border: none;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+menuitem {
+  border-radius: 15px;
+  color: #c6d0f5;
+}
+menuitem:hover {
+  background: #2a273f;
 }

@@ -3,20 +3,18 @@
   "position": "top",
   "margin-bottom": -10,
   "spacing": 0,
-  "modules-left": ["hyprland/workspaces", "cpu"],
+  "modules-left": ["hyprland/workspaces", "cpu", "custom/music"],
 
   "modules-center": ["clock"],
 
   "modules-right": [
-    "custom/music",
     "bluetooth",
     "network",
-    "pulseaudio",
     "backlight",
+    "pulseaudio",
     "battery",
-    "custom/lock",
-    "custom/restart",
-    "custom/shutdown"
+    "custom/updates",
+    "custom/power"
   ],
 
   "hyprland/workspaces": {
@@ -25,6 +23,11 @@
       "active": "",
       "default": ""
     }
+  },
+
+  "tray": {
+    "icon-size": 21,
+    "spacing": 15
   },
 
   "bluetooth": {
@@ -48,20 +51,45 @@
   },
 
   "custom/music": {
-    "format": " {}",
+    "format": "{icon} {text}",
+    "format-icons": {
+      "Playing": " ",
+      "Paused": " "
+    },
     "escape": true,
-    "interval": 5,
-    "tooltip": false,
-    "exec": "playerctl metadata --format='{{ artist }}-{{ title }}'",
+    "tooltip": true,
+    "exec": "~/.config/waybar/scripts/caway.sh",
+    "return-type": "json",
     "on-click": "playerctl play-pause",
-    "max-length": 30
+    "on-scroll-up": "playerctl previous",
+    "on-scroll-down": "playerctl next",
+    "on-click-right": "g4music",
+    "max-length": 20
   },
 
   "clock": {
-    "timezone": "Asia/Kolkata",
-    "tooltip": false,
-    "format": "{:%H:%M:%S  -  %A, %d}",
-    "interval": 1
+    "timezone": "Europe/Belgrade",
+    "format": "{:%H:%M:%S - %a %d}",
+    "interval": 1,
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "year",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "days": "<span color='#ecc6d9'><b>{}</b></span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    }
   },
 
   "network": {
@@ -91,28 +119,28 @@
     "format-icon": [""],
     "tooltip": false,
     "interval": 1600,
-    "exec": "$HOME/.config/waybar/scripts/uptime.sh"
+    "exec": "~/.config/waybar/scripts/uptime.sh"
   },
 
   "backlight": {
-    "format": "{icon}  {percent}%",
+    "format": "{icon}",
     "format-icons": ["", "󰃜", "󰃛", "󰃞", "󰃝", "󰃟", "󰃠"],
     "tooltip": false
   },
 
   "pulseaudio": {
-    "format": "{icon}  {volume}%",
+    "format": "{icon}",
     "format-muted": "",
     "format-icons": {
-      "default": ["", "", " "]
+      "default": ["", "", "", "", "", " ", " ", " ", " ", " "]
     },
-    "on-click": "pavucontrol"
+    "on-click": "pavucontrol",
+    "tooltip-format": "Volume: {volume}%\nDesc: {desc}"
   },
 
   "battery": {
     "interval": 2,
     "states": {
-      // "good": 95,
       "warning": 30,
       "critical": 94
     },
@@ -121,26 +149,35 @@
     "format-charging": " {capacity}%",
     "format-plugged": " {capacity}%",
     "format-alt": "{icon} {time}",
-    // "format-good": "", // An empty format will hide the module
-    // "format-full": "",
-    "format-icons": ["", "", "", "", ""]
+    "format-icons": ["", "", "", "", ""],
+    "tooltip-format": "Time: {timeTo}\nPower: {power}\nCycles: {cycles}\nHealth: {health}%"
   },
 
-  "custom/lock": {
-    "tooltip": false,
-    "on-click": "sh -c '(sleep 0s; hyprlock)' & disown",
-    "format": ""
+  "custom/updates": {
+    "exec": "~/.config/waybar/scripts/checkupdates.sh",
+    "on-click": "kitty -e sudo dnf update --refresh",
+    "on-click-right": "~/.config/waybar/scripts/checkupdates.sh",
+    "interval": 910,
+    "return-type": "json",
+    "format": "{icon}",
+    "format-alt": "{icon} {}",
+    "format-icons": {
+      "has-updates": "",
+      "updated": ""
+    }
   },
 
-  "custom/restart": {
+  "custom/power": {
+    "format": "⏻ ",
     "tooltip": false,
-    "on-click": "sh -c '(sleep 0s; systemctl reboot)' & disown",
-    "format": ""
-  },
-
-  "custom/shutdown": {
-    "tooltip": false,
-    "on-click": "sh -c '(sleep 0s; systemctl poweroff)' & disown",
-    "format": ""
+    "menu": "on-click",
+    "menu-file": "~/.config/waybar/power-menu.xml",
+    "menu-actions": {
+      "lock": "sh -c '(sleep 0s; hyprlock)' & disown",
+      "shutdown": "shutdown",
+      "reboot": "reboot",
+      "suspend": "systemctl suspend",
+      "hibernate": "systemctl hibernate"
+    }
   }
 }
