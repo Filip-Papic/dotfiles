@@ -12,16 +12,16 @@
             </object>
         </child>
         <child>
-            <object class="GtkMenuItem" id="shutdown">
-                <property name="label">⏻ Shutdown</property>
+            <object class="GtkMenuItem" id="reboot">
+                <property name="label"> Restart</property>
             </object>
         </child>
         <child>
             <object class="GtkSeparatorMenuItem" id="delimiter1" />
         </child>
         <child>
-            <object class="GtkMenuItem" id="reboot">
-                <property name="label"> Restart</property>
+            <object class="GtkMenuItem" id="shutdown">
+                <property name="label">⏻ Shutdown</property>
             </object>
         </child>
     </object>

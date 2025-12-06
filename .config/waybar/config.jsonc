@@ -1,20 +1,23 @@
 {
   "layer": "top",
   "position": "top",
-  "margin-bottom": -10,
+  "margin": -5,
   "spacing": 0,
-  "modules-left": ["hyprland/workspaces", "cpu", "custom/music"],
+  "reload_style_on_change": true,
+
+  "modules-left": ["hyprland/workspaces", "cpu", "temperature", "custom/music"],
 
   "modules-center": ["clock"],
 
   "modules-right": [
     "bluetooth",
     "network",
-    "backlight",
-    "pulseaudio",
-    "battery",
+    "custom/screenshot",
+    "group/backlight",
+    "wireplumber",
+    "group/hardware",
     "custom/updates",
-    "custom/power"
+    "group/power"
   ],
 
   "hyprland/workspaces": {
@@ -23,6 +26,12 @@
       "active": "",
       "default": ""
     }
+  },
+
+  "temperature": {
+    "critical-threshold": 80,
+    "format-critical": "{temperatureC}°C !",
+    "format": "{temperatureC}°C "
   },
 
   "tray": {
@@ -122,20 +131,45 @@
     "exec": "~/.config/waybar/scripts/uptime.sh"
   },
 
+  "custom/screenshot": {
+    "format": "󰩭",
+    "tooltip": "Select area to capture screenshot",
+    "on-click": "hyprshot -m region --output-folder ~/Pictures/Screenshots --freeze --silent --clipboard-only",
+    "interval": 0
+  },
+
   "backlight": {
     "format": "{icon}",
     "format-icons": ["", "󰃜", "󰃛", "󰃞", "󰃝", "󰃟", "󰃠"],
     "tooltip": false
   },
 
-  "pulseaudio": {
+  "backlight/slider": {
+    "min": 0,
+    "max": 100,
+    "orientation": "horizontal"
+  },
+
+  "group/backlight": {
+    "orientation": "inherit",
+    "modules": ["backlight", "backlight/slider"],
+    "drawer": {
+      "click-to-reveal": true,
+      "transition-duration": 500,
+      "children-class": "drawer",
+      "transition-left-to-right": false
+    }
+  },
+
+  "wireplumber": {
     "format": "{icon}",
     "format-muted": "",
-    "format-icons": {
-      "default": ["", "", "", "", "", " ", " ", " ", " ", " "]
-    },
-    "on-click": "pavucontrol",
-    "tooltip-format": "Volume: {volume}%\nDesc: {desc}"
+    "format-icons": ["", "", " "],
+    "on-click": "amixer set Master toggle",
+    "on-click-right": "pavucontrol",
+    "max-volume": 150,
+    "scroll-step": 5,
+    "interval": 10
   },
 
   "battery": {
@@ -148,9 +182,26 @@
     "format-full": "{icon} {capacity}%",
     "format-charging": " {capacity}%",
     "format-plugged": " {capacity}%",
-    "format-alt": "{icon} {time}",
     "format-icons": ["", "", "", "", ""],
     "tooltip-format": "Time: {timeTo}\nPower: {power}\nCycles: {cycles}\nHealth: {health}%"
+  },
+
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": "",
+      "performance": "",
+      "balanced": "",
+      "power-saver": ""
+    }
+  },
+
+  "disk": {
+    "interval": 30,
+    "format": "{used}/{total}",
+    "unit": "GB"
   },
 
   "custom/updates": {
@@ -167,17 +218,71 @@
     }
   },
 
-  "custom/power": {
+  // menu-based power options
+  // "custom/power": {
+  //   "format": "⏻ ",
+  //   "tooltip": false,
+  //   "menu": "on-click",
+  //   "menu-file": "~/.config/waybar/power-menu.xml",
+  //   "menu-actions": {
+  //     "lock": "sh -c '(sleep 0s; hyprlock)' & disown",
+  //     "shutdown": "shutdown",
+  //     "reboot": "reboot",
+  //     "suspend": "systemctl suspend",
+  //   }
+  // },
+
+  "custom/lock": {
+    "format": " ",
+    "tooltip": false,
+    "on-click": "sh -c '(sleep 0s; hyprlock)' & disown",
+    "interval": 0
+  },
+
+  "custom/shutdown": {
     "format": "⏻ ",
     "tooltip": false,
-    "menu": "on-click",
-    "menu-file": "~/.config/waybar/power-menu.xml",
-    "menu-actions": {
-      "lock": "sh -c '(sleep 0s; hyprlock)' & disown",
-      "shutdown": "shutdown",
-      "reboot": "reboot",
-      "suspend": "systemctl suspend",
-      "hibernate": "systemctl hibernate"
+    "on-click": "shutdown",
+    "interval": 0
+  },
+
+  "custom/reboot": {
+    "format": " ",
+    "tooltip": false,
+    "on-click": "reboot",
+    "interval": 0
+  },
+
+  "custom/suspend": {
+    "format": " ",
+    "tooltip": false,
+    "on-click": "systemctl suspend",
+    "interval": 0
+  },
+
+  "group/power": {
+    "orientation": "inherit",
+    "modules": [
+      "custom/lock",
+      "custom/shutdown",
+      "custom/reboot",
+      "custom/suspend"
+    ],
+    "drawer": {
+      "transition-duration": 500,
+      "children-class": "drawer",
+      "transition-left-to-right": false
+    }
+  },
+
+  "group/hardware": {
+    "orientation": "inherit",
+    "modules": ["battery", "power-profiles-daemon"],
+    "drawer": {
+      "click-to-reveal": true,
+      "transition-duration": 500,
+      "children-class": "drawer",
+      "transition-left-to-right": false
     }
   }
 }

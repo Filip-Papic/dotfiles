@@ -2,16 +2,14 @@
 * {
   font-family: "JetBrainsMono Nerd Font", "SF Pro Text", "Inter",
     "Segoe UI, NotoSans Nerd Font", sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   min-height: 0;
-  padding-right: 0px;
-  padding-left: 0px;
-  padding-bottom: 0px;
+  padding: 0;
 }
 
 /* --- Waybar Container --- */
 #waybar {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.02);
   color: #c6d0f5;
   margin: 0px;
   font-weight: 500;
@@ -21,17 +19,17 @@
 #workspaces,
 #custom-uptime,
 #cpu,
+#temperature,
 #custom-music.Playing,
 #custom-music.Paused {
   background-color: #1a1b26;
   padding: 0.3rem 0.7rem;
-  margin: 5px 0px; /* 5px top/bottom margin, 0px left/right (base for individual control) */
-  border-radius: 6px; /* These modules are always rounded */
+  margin: 5px 0px;
+  border-radius: 0px 0px 6px 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   min-width: 0;
   border: none;
-  /* Transition for background-color and color only */
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
 }
 
 #workspaces {
@@ -46,7 +44,8 @@
 
 /* Simple Hover effects for individual left modules - BRIGHTER COLOR */
 #custom-uptime:hover,
-#cpu:hover {
+#cpu:hover,
+#temperature:hover {
   background-color: rgb(41, 42, 53); /* Brighter highlight */
 }
 
@@ -66,6 +65,10 @@
   box-shadow: inset 0 0 0 1px rgba(153, 209, 219, 0.2);
 }
 
+#workspaces button.urgent {
+  background-color: #eb4d4b;
+}
+
 #workspaces button:hover {
   background: rgb(41, 42, 53); /* Reference bright hover color */
   color: #c6d0f5;
@@ -83,6 +86,11 @@
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
+#temperature.critical {
+  background-color: #3e1f1f;
+  box-shadow: 0 1px 3px rgba(231, 130, 132, 0.4);
+}
+
 /* Simple Hover effect for clock module - BRIGHTER COLOR */
 #clock:hover {
   background-color: rgba(153, 209, 219, 0.1); /* Brighter highlight */
@@ -90,28 +98,48 @@
 
 /* --- Right Modules (Single, Seamless Bar ) --- */
 #bluetooth,
-#pulseaudio,
+#wireplumber,
 #backlight,
 #network,
-#custom-power,
 #custom-updates,
+#disk,
+#memory,
+#custom-lock,
+#custom-shutdown,
+#custom-reboot,
+#custom-suspend,
+#custom-screenshot,
+#power-profiles-daemon,
 #battery {
   background-color: #1a1b26;
-  padding: 0.3rem 0.7rem;
+  min-width: 20px;
+  padding: 0.05rem 0.2rem;
   margin: 5px 0px;
   border-radius: 0;
   box-shadow: none;
-  min-width: 0;
   border: none;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
+/* #wireplumber, */
+#backlight {
+  padding: 0rem 0rem;
+  margin: 5px 0px;
+}
+
 #bluetooth:hover,
-#pulseaudio:hover,
+#wireplumber:hover,
 #backlight:hover,
 #network:hover,
-#custom-power:hover,
 #custom-updates:hover,
+#disk:hover,
+#memory:hover,
+#custom-lock:hover,
+#custom-shutdown:hover,
+#custom-reboot:hover,
+#custom-suspend:hover,
+#custom-screenshot:hover,
+#power-profiles-daemon:hover,
 #battery:hover {
   background-color: rgb(41, 42, 53);
 }
@@ -122,7 +150,7 @@
   border-bottom-left-radius: 6px;
 }
 
-#custom-power {
+#custom-lock {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   margin-right: 7px;
@@ -140,7 +168,15 @@
   font-weight: 500;
 }
 
-#pulseaudio {
+#disk {
+  color: #c6d0f5;
+}
+
+#memory {
+  color: #c6d0f5;
+}
+
+#wireplumber {
   color: #c6d0f5;
 }
 #backlight {
@@ -155,7 +191,7 @@
   color: #e78284;
 }
 
-#custom-power {
+#custom-shutdown {
   color: #e78284;
 }
 
@@ -207,6 +243,35 @@ tooltip label {
   opacity: 0;
 }
 
+/* --- Volume/Backlight Slider Styles --- */
+
+#backlight-slider {
+  padding: 0;
+  margin: 0;
+}
+
+#backlight-slider slider {
+  min-height: 0px;
+  min-width: 0px;
+  opacity: 0;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  background: none;
+}
+#backlight-slider trough {
+  min-height: 6px;
+  min-width: 70px;
+  border-radius: 5px;
+  background: #313244;
+  margin-bottom: 9px;
+}
+#backlight-slider highlight {
+  min-width: 10px;
+  border-radius: 5px;
+  background: #99d1db;
+}
+
 /* --- Power Menu Styles --- */
 
 menu {
@@ -214,13 +279,24 @@ menu {
   border-radius: 0;
   box-shadow: none;
   min-width: 0;
-  border: none;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 menuitem {
-  border-radius: 15px;
+  border-radius: 6px;
+  padding: 4px 0px;
   color: #c6d0f5;
+}
+menuitem:last-child {
+  margin-bottom: 7px;
 }
 menuitem:hover {
   background: #2a273f;
+}
+menu separator {
+  min-height: 2px;
+  margin: 4px 8px;
+  background-color: #313244;
 }
