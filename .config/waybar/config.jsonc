@@ -107,7 +107,7 @@
     "format-disconnected": "󰤠 ",
     "interval": 5,
     "tooltip-format": "{essid} ({signalStrength}%)",
-    "on-click": "nm-connection-editor"
+    "on-click": "kitty -e nmtui"
   },
 
   "cpu": {
@@ -242,7 +242,7 @@
   "custom/shutdown": {
     "format": "⏻ ",
     "tooltip": false,
-    "on-click": "shutdown",
+    "on-click": "systemctl poweroff",
     "interval": 0
   },
 

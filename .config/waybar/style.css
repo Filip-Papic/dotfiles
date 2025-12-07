@@ -246,7 +246,7 @@ tooltip label {
 /* --- Volume/Backlight Slider Styles --- */
 
 #backlight-slider {
-  padding: 0;
+  padding: 0px 8px;
   margin: 0;
 }
 
@@ -264,7 +264,6 @@ tooltip label {
   min-width: 70px;
   border-radius: 5px;
   background: #313244;
-  margin-bottom: 9px;
 }
 #backlight-slider highlight {
   min-width: 10px;
